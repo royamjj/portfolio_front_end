@@ -1,5 +1,8 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolio/photo_gallery_screen.dart';
+import 'package:portfolio/professional_screen.dart';
+import 'package:portfolio/theme_constants.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,122 +34,110 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool loaded = false;
-  List<Widget> images = [];
-  bool isLoadingMore = false;
-  final ScrollController _scrollController = ScrollController();
-
+  bool showPhotoPortfolio = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
-    // loadData();
-    loadMoreImages();
   }
-
-  Future<void> loadMoreImages() async {
-    setState(() {
-      isLoadingMore = true;
-    });
-    await Future.delayed(const Duration(seconds: 2));
-    for (int i = 0; i < 10; i++) {
-      int id = Random().nextInt(100) + 1;
-      int height = Random().nextInt(400) + 200;
-      int width = Random().nextInt(400) + 200;
-      images.add(
-        Image.network(
-          "https://picsum.photos/id/$id/$width/$height",
-          fit: BoxFit.cover,
-        ),
-      );
-    }
-    setState(() {
-      isLoadingMore = false;
-    });
-  }
-
-  void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 200 && !isLoadingMore) {
-      loadMoreImages();
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  // loadData() async{
-  //   for(int i=0;i<20;i++) {
-  //     int id = Random().nextInt(100) + 1;
-  //     int height = Random().nextInt(400) + 200;
-  //     int width = Random().nextInt(400) + 200;
-  //     images.add(Image.network("https://picsum.photos/id/$id/$width/$height", fit: BoxFit.cover,));
-  //   }
-  //   setState(() {
-  //     loaded = true;
-  //   });
-  // }
-
 
   @override
   Widget build(BuildContext context) {
-    // if(!loaded)return const CircularProgressIndicator();
     return SafeArea(
-      child: Scaffold(
-        body: Container(
-          color: Colors.black87,
-          child: Center(
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'You have pushed the button this many times:',
+      child: MaterialApp(
+        theme: theme,
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            title: Row(
+              children: [
+                const SizedBox(
+                  width: 10,
+                ),
+                Text("Portfolio",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Colors.purple.shade200,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: GoogleFonts.montserrat().fontFamily)),
+              ],
+            ),
+            actions: [
+              //linkedin
+              //github
+              //contact
+              const Row(
+                children: [
+                  Icon(Icons.perm_contact_cal),
+                  SizedBox(
+                    width: 5,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Wrap(
-                      spacing: 8.0,
-                      runSpacing: 10.0,
-                      alignment: WrapAlignment.spaceEvenly,
-                      children: images.map((widget) => DynamicWidthImage(widget: widget,)).toList(),
-                    ),
+                  SelectableText(
+                    "+91 7733007245"
                   ),
-                  if (isLoadingMore)
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
-                    ),
                 ],
               ),
-            ),
+              const Row(
+                children: [
+                  Icon(Icons.mail),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  SelectableText(
+                      "royamjain@gmail.com"
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 70,
+              ),
+              Text(
+                "Software",
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: pinkSwitch,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: GoogleFonts.montserrat().fontFamily),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Switch(
+                  activeColor: colorWhite,
+                  activeTrackColor: orangeSwitch,
+                  inactiveThumbColor: colorWhite,
+                  inactiveTrackColor: pinkSwitch,
+                  thumbIcon: showPhotoPortfolio
+                      ? WidgetStateProperty.all(Icon(Icons.camera_alt, color: pinkSwitch,))
+                      : WidgetStateProperty.all(Icon(Icons.adjust, color: orangeSwitch,)),
+                  value: showPhotoPortfolio,
+                  trackOutlineWidth: WidgetStateProperty.all(0),
+                  onChanged: (bool check) {
+                    setState(() {
+                      showPhotoPortfolio = !showPhotoPortfolio;
+                    });
+                  }),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                "Photo gallery",
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: orangeSwitch,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: GoogleFonts.montserrat().fontFamily),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+            ],
+          ),
+          body: IndexedStack(
+            index: showPhotoPortfolio ? 1 : 0,
+            children: const [
+              ProfessionalScreen(),
+              PhotoGalleryScreen(),
+            ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class DynamicWidthImage extends StatelessWidget {
-  final Widget widget;
-
-  DynamicWidthImage({required this.widget});
-
-  @override
-  Widget build(BuildContext context) {
-    double maxH = MediaQuery.of(context).size.height >= 600 ? 300 : 200;
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 400, maxHeight: maxH),
-      child: Container(
-        color: Colors.blueGrey,
-        // width: (MediaQuery.of(context).size.width / 3) - 16,
-        height: 300,
-        child: widget,
       ),
     );
   }
