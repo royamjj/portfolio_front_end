@@ -46,31 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             actions: [
-              //linkedin
-              //github
-              //contact
-              // const Row(
-              //   children: [
-              //     Icon(Icons.perm_contact_cal),
-              //     SizedBox(
-              //       width: 5,
-              //     ),
-              //     SelectableText(
-              //       "+91 7733007245"
-              //     ),
-              //   ],
-              // ),
-              // const Row(
-              //   children: [
-              //     Icon(Icons.mail),
-              //     SizedBox(
-              //       width: 5,
-              //     ),
-              //     SelectableText(
-              //         "royamjain@gmail.com"
-              //     ),
-              //   ],
-              // ),
               const SizedBox(
                 width: 70,
               ),
@@ -93,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     inactiveTrackColor: pinkSwitch,
                     thumbIcon: showPhotoPortfolio
                         ? WidgetStateProperty.all(Icon(Icons.camera_alt, color: pinkSwitch,))
-                        : WidgetStateProperty.all(Icon(Icons.adjust, color: orangeSwitch,)),
+                        : WidgetStateProperty.all(Icon(Icons.laptop_windows_sharp, color: orangeSwitch,)),
                     value: showPhotoPortfolio,
                     trackOutlineWidth: WidgetStateProperty.all(0),
                     onChanged: (bool check) {

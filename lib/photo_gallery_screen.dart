@@ -15,7 +15,6 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
   List<Widget> images = [];
   bool isLoadingMore = false;
   final ScrollController _scrollController = ScrollController();
-  Widget imageWidget = Container();
   int enlargedIndex = 0;
   bool enlargedView = false;
 
@@ -117,14 +116,17 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
                       // physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: images.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: (){
-                            setState(() {
-                              enlargedView = true;
-                              enlargedIndex = index;
-                            });
-                          },
-                            child: DynamicWidthImage(widget: images[index])
+                        return MouseRegion(
+                          cursor: SystemMouseCursors.zoomIn,
+                          child: GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                enlargedView = true;
+                                enlargedIndex = index;
+                              });
+                            },
+                              child: DynamicWidthImage(widget: images[index])
+                          ),
                         );
                       },
                     ),
