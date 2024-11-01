@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/photo_gallery_screen.dart';
 import 'package:portfolio/professional_screen.dart';
-import 'package:portfolio/theme_constants.dart';
+import 'package:portfolio/constants.dart';
 
 void main() {
   runApp(const MyHomePage());
@@ -33,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.black,
             title: Row(
               children: [
                 const SizedBox(
@@ -40,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Text("Portfolio",
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Colors.purple.shade200,
+                        color: purple,
                         fontWeight: FontWeight.bold,
                         fontFamily: GoogleFonts.montserrat().fontFamily)),
               ],

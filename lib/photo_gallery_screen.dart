@@ -247,7 +247,6 @@ class DynamicWidthImage extends StatelessWidget {
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       child: Container(
-        // color: Colors.blueGrey,
         constraints: const BoxConstraints(maxHeight: 300),
         // width: (MediaQuery.of(context).size.width / 3) - 16,
         // height: 300,
