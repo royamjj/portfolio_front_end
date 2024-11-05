@@ -28,6 +28,15 @@ class ExperienceWidget extends StatefulWidget {
 
 class ExperienceWidgetState extends State<ExperienceWidget> {
   int selectedIndex = 0;
+  late double width;
+  late bool isWebView = false;
+
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    width = MediaQuery.sizeOf(context).width;
+    isWebView = width >= 800 ? true : false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +52,88 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
             ],
           ),
         ),
+        if(isWebView)
         const SizedBox(
           width: 20,
         ),
-        Expanded(flex: 1, child: createDetailWidget())
+        if(isWebView)Expanded(flex: 1, child: createDetailWidget())
       ],
     );
+  }
+
+  Future dialogDetailsWidget(){
+    return showDialog(context: context, builder: (context){
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          width: MediaQuery.sizeOf(context).width,
+          decoration: BoxDecoration(
+            color: backgroundBlack,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              width: 2,
+              color: pinkSwitch,
+            ),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.experiences[selectedIndex].title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  "@${widget.experiences[selectedIndex].company}",
+                  softWrap: true,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: colorWhite,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Column(
+                  children: [
+                    for (String point in widget.experiences[selectedIndex].points)
+                      Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.adjust,
+                                color: orangeSwitch,
+                                size: 20,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                  child: Text(
+                                    point,
+                                    softWrap: true,
+                                  ))
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 
   Widget createTileWidget(int index, bool isLast, bool isFirst) {
@@ -56,7 +141,7 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Column(
+        if(isWebView)Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -72,14 +157,18 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                   ),
           ],
         ),
-        // Icon(Icons.),
-        const SizedBox(width: 16),
+        if(isWebView)const SizedBox(width: 16),
         Expanded(
           child: InkWell(
             onTap: () {
-              setState(() {
+              if(isWebView){
+                setState(() {
+                  selectedIndex = index;
+                });
+              }else{
                 selectedIndex = index;
-              });
+                dialogDetailsWidget();
+              }
             },
             child: Container(
               margin: const EdgeInsets.only(bottom: 16),
@@ -89,7 +178,7 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   width: 2,
-                  color: selectedIndex == index ? yellow : pinkSwitch,
+                  color: isWebView && selectedIndex == index ? yellow : pinkSwitch,
                 ),
               ),
               child: Column(
@@ -98,14 +187,17 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        widget.experiences[index].title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(color: orangeSwitch, fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Text(
+                          widget.experiences[index].title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(color: orangeSwitch, fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(width: 8),
                       Text(
                         widget.experiences[index].yearRange,
                         style: Theme.of(context).textTheme.titleSmall,
@@ -138,169 +230,91 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
           FadeEffect(duration: Duration(milliseconds: 300)),
           SlideEffect(begin: Offset(100, 0), curve: Curves.easeInOut, duration: Duration(milliseconds: 300)),
         ],
-        child: Expanded(
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 16),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: backgroundBlack,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                width: 2,
-                color: yellow,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      widget.experiences[selectedIndex].title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    Text(
-                      "  @${widget.experiences[selectedIndex].company}",
-                      softWrap: true,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: colorWhite,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Column(
-                  children: [
-                    for (String point in widget.experiences[selectedIndex].points)
-                      Column(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.adjust,
-                                color: orangeSwitch,
-                                size: 20,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                  child: Text(
-                                point,
-                                softWrap: true,
-                              ))
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      )
-                  ],
-                ),
-                // SizedBox(
-                //   height: 300,
-                //   child: ListView.builder(
-                //     itemCount: widget.experiences[selectedIndex].points.length,
-                //     itemBuilder: (BuildContext context, int index) {
-                //       return Expanded(
-                //         child: Row(
-                //           children: [
-                //             Icon(Icons.adjust),
-                //             Text(widget.experiences[selectedIndex].points[index], softWrap: true,)
-                //           ],
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
-              ],
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: backgroundBlack,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              width: 2,
+              color: yellow,
             ),
           ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.experiences[selectedIndex].title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    "  @${widget.experiences[selectedIndex].company}",
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: colorWhite,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Column(
+                children: [
+                  for (String point in widget.experiences[selectedIndex].points)
+                    Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.adjust,
+                              color: orangeSwitch,
+                              size: 20,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                                child: Text(
+                              point,
+                              softWrap: true,
+                            ))
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    )
+                ],
+              ),
+              // SizedBox(
+              //   height: 300,
+              //   child: ListView.builder(
+              //     itemCount: widget.experiences[selectedIndex].points.length,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       return Expanded(
+              //         child: Row(
+              //           children: [
+              //             Icon(Icons.adjust),
+              //             Text(widget.experiences[selectedIndex].points[index], softWrap: true,)
+              //           ],
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
+            ],
+          ),
         ));
-    // return Expanded(
-    //   child: Container(
-    //     margin: const EdgeInsets.only(bottom: 16),
-    //     padding: const EdgeInsets.all(16),
-    //     decoration: BoxDecoration(
-    //       color: backgroundBlack,
-    //       borderRadius: BorderRadius.circular(8),
-    //       border: Border.all(
-    //         width: 2,
-    //         color: pinkSwitch,
-    //       ),
-    //     ),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Row(
-    //           crossAxisAlignment: CrossAxisAlignment.end,
-    //           children: [
-    //             Text(
-    //               widget.experiences[selectedIndex].title,
-    //               style: Theme.of(context).textTheme.titleMedium,
-    //             ),
-    //             Text(
-    //               "  @${widget.experiences[selectedIndex].company}",
-    //               softWrap: true,
-    //               style: TextStyle(
-    //                 fontSize: 14,
-    //                 color: colorWhite,
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //         const SizedBox(height: 30,),
-    //         Column(
-    //           children: [
-    //             for (String point in widget.experiences[selectedIndex].points)
-    //               Column(
-    //                 children: [
-    //                   Row(
-    //                     crossAxisAlignment: CrossAxisAlignment.center,
-    //                     children: [
-    //                       Icon(
-    //                         Icons.adjust,
-    //                         color: orangeSwitch,
-    //                         size: 20,
-    //                       ),
-    //                       const SizedBox(width: 10,),
-    //                       Expanded(
-    //                           child: Text(
-    //                         point,
-    //                         softWrap: true,
-    //                       ))
-    //                     ],
-    //                   ),
-    //                   const SizedBox(height: 10,),
-    //                 ],
-    //               )
-    //           ],
-    //         ),
-    //         // SizedBox(
-    //         //   height: 300,
-    //         //   child: ListView.builder(
-    //         //     itemCount: widget.experiences[selectedIndex].points.length,
-    //         //     itemBuilder: (BuildContext context, int index) {
-    //         //       return Expanded(
-    //         //         child: Row(
-    //         //           children: [
-    //         //             Icon(Icons.adjust),
-    //         //             Text(widget.experiences[selectedIndex].points[index], softWrap: true,)
-    //         //           ],
-    //         //         ),
-    //         //       );
-    //         //     },
-    //         //   ),
-    //         // ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

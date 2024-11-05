@@ -5,7 +5,9 @@ import 'package:portfolio/constants.dart';
 import 'experience.dart';
 
 class ProfessionalScreen extends StatefulWidget {
-  const ProfessionalScreen({super.key});
+  Function? callback;
+
+  ProfessionalScreen({super.key, this.callback});
 
   @override
   State<ProfessionalScreen> createState() => _ProfessionalScreenState();
@@ -30,16 +32,15 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> {
                 begin: 0,
                 end: 0.4,
                 builder: (_, value, __) => Container(
-                    decoration: BoxDecoration(gradient: LinearGradient(colors: [purple, orangeSwitch], stops: [value, 1])),
+                    decoration:
+                        BoxDecoration(gradient: LinearGradient(colors: [purple, orangeSwitch], stops: [value, 1])),
                     child: Padding(
-                        padding: EdgeInsets.fromLTRB(width >= 800 ? 150 : 50, 50, width >= 800 ? 150 : 50, 50),
+                        padding: EdgeInsets.fromLTRB(
+                            width >= 800 ? width * 0.1 : 30, 50, width >= 800 ? width * 0.1 : 30, 0),
                         child: getBioWidget(width))),
               ),
-              const SizedBox(
-                height: 100,
-              ),
               Padding(
-                padding: EdgeInsets.fromLTRB(width >= 800 ? 100 : 30, 0, width >= 800 ? 100 : 30, 10),
+                padding: EdgeInsets.fromLTRB(width >= 800 ? width * 0.1 : 30, 40, width >= 800 ? width * 0.1 : 30, 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +59,7 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> {
               //resume
               //certificates
               //contact
+              //publications
             ],
           ),
         ));
@@ -65,20 +67,30 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> {
 
   Widget getBioWidget(double width) {
     if (width >= 800) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...getBioTextWidgets()
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [...getBioTextWidgets()],
+                ),
+              ),
+              getImageWidget(width),
+            ],
           ),
-          getImageWidget(width),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          goToPhotosWidget(),
+          const SizedBox(
+            height: 50,
+          ),
         ],
       );
     }
@@ -89,19 +101,42 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> {
         const SizedBox(
           height: 10,
         ),
-        ...getBioTextWidgets()
+        ...getBioTextWidgets(),
+        const SizedBox(
+          height: 30,
+        ),
+        goToPhotosWidget(),
+        const SizedBox(
+          height: 30,
+        ),
       ],
     );
   }
 
-  List<Widget> getBioTextWidgets(){
+  Widget goToPhotosWidget() {
+    return Animate(
+        autoPlay: true,
+        delay: const Duration(milliseconds: 500),
+        effects: const [
+          FadeEffect(duration: Duration(seconds: 0, milliseconds: 500)),
+          SlideEffect(
+              begin: Offset(-100, 0), curve: Curves.easeInOut, duration: Duration(seconds: 0, milliseconds: 500)),
+        ],
+        child: ElevatedButton(
+            onPressed: () {
+              widget.callback!();
+            },
+            child: const Text("Go to photos")));
+  }
+
+  List<Widget> getBioTextWidgets() {
     return [
       Animate(
           autoPlay: true,
-          delay: const Duration(seconds: 0),
           effects: [
-            const FadeEffect(duration: Duration(seconds: 1,milliseconds: 500)),
-            const SlideEffect(begin: Offset(-100, 0), curve: Curves.easeInOut,duration: Duration(seconds: 1,milliseconds: 300)),
+            const FadeEffect(duration: Duration(seconds: 0, milliseconds: 500)),
+            const SlideEffect(
+                begin: Offset(-100, 0), curve: Curves.easeInOut, duration: Duration(seconds: 0, milliseconds: 500)),
             TintEffect(color: colorWhite)
           ],
           child: const SelectableText(
@@ -109,14 +144,14 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> {
             style: TextStyle(
               fontSize: 20,
             ),
-          )
-      ),
+          )),
       Animate(
         autoPlay: true,
         delay: const Duration(milliseconds: 300),
         effects: [
-          const FadeEffect(duration: Duration(seconds: 1,milliseconds: 300)),
-          const SlideEffect(begin: Offset(-100, 0), curve: Curves.easeInOut,duration: Duration(seconds: 1,milliseconds: 300)),
+          const FadeEffect(duration: Duration(seconds: 0, milliseconds: 500)),
+          const SlideEffect(
+              begin: Offset(-100, 0), curve: Curves.easeInOut, duration: Duration(seconds: 0, milliseconds: 500)),
           TintEffect(color: colorWhite)
         ],
         child: const SelectableText(
@@ -130,8 +165,9 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> {
           autoPlay: true,
           delay: const Duration(milliseconds: 500),
           effects: [
-            const FadeEffect(duration: Duration(seconds: 1, milliseconds: 300)),
-            const SlideEffect(begin: Offset(-100, 0), curve: Curves.easeInOut,duration: Duration(seconds: 1,milliseconds: 300)),
+            const FadeEffect(duration: Duration(seconds: 0, milliseconds: 500)),
+            const SlideEffect(
+                begin: Offset(-100, 0), curve: Curves.easeInOut, duration: Duration(seconds: 0, milliseconds: 500)),
             TintEffect(color: colorWhite)
           ],
           child: const SelectableText(

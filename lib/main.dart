@@ -19,6 +19,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool showPhotoPortfolio = false;
 
+  switchBar(){
+    setState(() {
+      showPhotoPortfolio = !showPhotoPortfolio;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.sizeOf(context).width;
     return SafeArea(
       child: MaterialApp(
         title: "Royam Jain Portfolio",
@@ -50,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(
                 width: 70,
               ),
-              Text(
+              if(width >= 800)Text(
                 "Software",
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(
                     color: pinkSwitch,
@@ -73,15 +80,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     value: showPhotoPortfolio,
                     trackOutlineWidth: WidgetStateProperty.all(0),
                     onChanged: (bool check) {
-                      setState(() {
-                        showPhotoPortfolio = !showPhotoPortfolio;
-                      });
+                      switchBar();
                     }),
               ),
               const SizedBox(
                 width: 10,
               ),
-              Text(
+              if(width >= 800)Text(
                 "Photo gallery",
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(
                     color: orangeSwitch,
@@ -95,9 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           body: IndexedStack(
             index: showPhotoPortfolio ? 1 : 0,
-            children: const [
-              ProfessionalScreen(),
-              PhotoGalleryScreen(),
+            children: [
+              ProfessionalScreen(callback: switchBar,),
+              const PhotoGalleryScreen(),
             ],
           )
         ),
