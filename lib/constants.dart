@@ -13,6 +13,8 @@ final Color pinkSwitch = HexColor("be375f");
 final Color purple = HexColor("b04ec3");
 final Color darkPurple = HexColor("883f96");
 final Color yellow = HexColor("e7de76");
+final Color animationRed = Colors.red.shade400;
+final Color animationOrange = Colors.orange.shade300;
 
 final ThemeData theme = ThemeData(
   scaffoldBackgroundColor: colorWhite,

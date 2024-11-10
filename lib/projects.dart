@@ -39,16 +39,32 @@ class ProjectWidget extends StatefulWidget {
   ProjectWidgetState createState() => ProjectWidgetState();
 }
 
-class ProjectWidgetState extends State<ProjectWidget> {
+class ProjectWidgetState extends State<ProjectWidget> with SingleTickerProviderStateMixin {
   int selectedIndex = 0;
   late double width;
   late bool isWebView = false;
+  late AnimationController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     width = MediaQuery.sizeOf(context).width;
     isWebView = width >= 800 ? true : false;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -122,157 +138,180 @@ class ProjectWidgetState extends State<ProjectWidget> {
     );
   }
 
-  Future expandedView() {
+  Object expandedView() {
     return showDialog(
         context: context,
         builder: (context) {
           return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              width: MediaQuery.sizeOf(context).width,
-              decoration: BoxDecoration(
-                color: backgroundBlack,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  width: 2,
-                  color: pinkSwitch,
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return ShaderMask(
+                    shaderCallback: (bounds) {
+                      return LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: const [
+                          0.0,
+                          1.0,
+                        ],
+                        colors: [
+                          animationRed,
+                          animationOrange,
+                        ],
+                        transform: GradientRotation(_controller.value * 2 * 3.1415),
+                      ).createShader(bounds);
+                    },
+                    child: child,
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  width: MediaQuery.sizeOf(context).width,
+                  decoration: BoxDecoration(
+                    color: backgroundBlack,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      width: 2,
+                      color: pinkSwitch,
+                    ),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          projects[selectedIndex].title,
-                          style: Theme.of(context).textTheme.titleLarge,
-                          overflow: TextOverflow.ellipsis,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              projects[selectedIndex].title,
+                              style: Theme.of(context).textTheme.titleLarge,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: colorWhite,
+                                ))
+                          ],
                         ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            icon: Icon(
-                              Icons.clear,
-                              color: colorWhite,
-                            ))
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'About - ${projects[selectedIndex].description}',
-                      style: Theme.of(context).textTheme.titleMedium,
-                      // overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    for (String point in projects[selectedIndex].points)
-                      Column(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          'About - ${projects[selectedIndex].description}',
+                          style: Theme.of(context).textTheme.titleMedium,
+                          // overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        for (String point in projects[selectedIndex].points)
+                          Column(
                             children: [
-                              Icon(
-                                Icons.adjust,
-                                color: orangeSwitch,
-                                size: 20,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.adjust,
+                                    color: orangeSwitch,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                    point,
+                                    softWrap: true,
+                                  ))
+                                ],
                               ),
                               const SizedBox(
-                                width: 10,
+                                height: 10,
                               ),
-                              Expanded(
-                                  child: Text(
-                                point,
-                                softWrap: true,
-                              ))
                             ],
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Wrap(
-                        spacing: 8.0,
-                        runSpacing: 8.0,
-                        children: projects[selectedIndex]
-                            .techStack
-                            .map(
-                              (tech) => Chip(
-                                label: Text(tech),
-                                backgroundColor: backgroundBlack,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                side: BorderSide(color: pinkSwitch, width: 2),
-                                labelStyle:
-                                    Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Wrap(
+                            spacing: 8.0,
+                            runSpacing: 8.0,
+                            children: projects[selectedIndex]
+                                .techStack
+                                .map(
+                                  (tech) => Chip(
+                                    label: Text(tech),
+                                    backgroundColor: backgroundBlack,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                    side: BorderSide(color: pinkSwitch, width: 2),
+                                    labelStyle:
+                                        Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  ),
+                                )
+                                .toList()),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Visibility(
+                          visible: projects[selectedIndex].links?.isNotEmpty ?? false,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Relevant links below',
+                                style: Theme.of(context).textTheme.titleMedium,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
                               ),
-                            )
-                            .toList()),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Visibility(
-                      visible: projects[selectedIndex].links?.isNotEmpty ?? false,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Relevant links below',
-                            style: Theme.of(context).textTheme.titleMedium,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          for (Link link in projects[selectedIndex].links ?? [])
-                            InkWell(
-                              onTap: () {
-                                _launchUrl(link.link);
-                              },
-                              child: Column(
-                                children: [
-                                  Row(
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              for (Link link in projects[selectedIndex].links ?? [])
+                                InkWell(
+                                  onTap: () {
+                                    _launchUrl(link.link);
+                                  },
+                                  child: Column(
                                     children: [
-                                      Icon(Icons.link, color: orangeSwitch,),
-                                      const SizedBox(
-                                        width: 10,
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.link,
+                                            color: orangeSwitch,
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            link.displayText,
+                                            style:
+                                                Theme.of(context).textTheme.titleSmall!.copyWith(color: orangeSwitch),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        link.displayText,
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(color: orangeSwitch),
-                                        overflow: TextOverflow.ellipsis,
+                                      const SizedBox(
+                                        height: 10,
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                ],
-                              ),
-                            )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
+                                )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )),
           );
         });
   }

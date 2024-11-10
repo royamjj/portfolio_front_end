@@ -14,15 +14,33 @@ class ProfessionalScreen extends StatefulWidget {
   State<ProfessionalScreen> createState() => _ProfessionalScreenState();
 }
 
-class _ProfessionalScreenState extends State<ProfessionalScreen> {
+class _ProfessionalScreenState extends State<ProfessionalScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.sizeOf(context).width;
     double height = MediaQuery.sizeOf(context).height;
+
     return Container(
         height: height,
         width: width,
-        color: backgroundBlack,
+        color: Colors.black,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -40,37 +58,56 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> {
                             width >= 800 ? width * 0.1 : 30, 50, width >= 800 ? width * 0.1 : 30, 0),
                         child: getBioWidget(width))),
               ),
-              // Padding(
-              //   padding: EdgeInsets.fromLTRB(width >= 800 ? width * 0.1 : 30, 40, width >= 800 ? width * 0.1 : 30, 10),
-              //   child: Column(
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Text("Experience", style: Theme.of(context).textTheme.headlineLarge),
-              //       const SizedBox(
-              //         height: 50,
-              //       ),
-              //       const ExperienceWidget(),
-              //     ],
-              //   ),
-              // ),
               const SizedBox(
                 height: 50,
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(width >= 800 ? width * 0.1 : 30, 40, width >= 800 ? width * 0.1 : 30, 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Projects", style: Theme.of(context).textTheme.headlineLarge),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    const ProjectWidget(),
-                  ],
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return ShaderMask(
+                    shaderCallback: (bounds) {
+                      return LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: const [
+                          0.0,
+                          1.0,
+                        ],
+                        colors: [
+                          animationRed,
+                          animationOrange
+                        ],
+                        transform: GradientRotation(_controller.value * 2 * 3.1415),
+                      ).createShader(bounds);
+                    },
+                    child: child,
+                  );
+                },
+                child: Padding(
+                  padding:
+                      EdgeInsets.fromLTRB(width >= 800 ? width * 0.1 : 30, 40, width >= 800 ? width * 0.1 : 30, 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Experience", style: Theme.of(context).textTheme.headlineLarge),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      const ExperienceWidget(),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Text("Projects", style: Theme.of(context).textTheme.headlineLarge),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      const ProjectWidget(),
+                    ],
+                  ),
                 ),
               ),
+
               //certificates
               //publications
               //resume

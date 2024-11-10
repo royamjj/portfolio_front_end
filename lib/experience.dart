@@ -25,10 +25,27 @@ class ExperienceWidget extends StatefulWidget {
   ExperienceWidgetState createState() => ExperienceWidgetState();
 }
 
-class ExperienceWidgetState extends State<ExperienceWidget> {
+class ExperienceWidgetState extends State<ExperienceWidget> with SingleTickerProviderStateMixin{
   int selectedIndex = 0;
   late double width;
   late bool isWebView = false;
+
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies(){
@@ -63,87 +80,106 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
   Future dialogDetailsWidget(){
     return showDialog(context: context, builder: (context){
       return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          width: MediaQuery.sizeOf(context).width,
-          decoration: BoxDecoration(
-            color: backgroundBlack,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              width: 2,
-              color: pinkSwitch,
-            ),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return ShaderMask(
+                shaderCallback: (bounds) {
+                  return LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: const [
+                      0.0,
+                      1.0,
+                    ],
+                    colors: [
+                      animationRed,
+                      animationOrange,
+                    ],
+                    transform: GradientRotation(_controller.value * 2 * 3.1415),
+                  ).createShader(bounds);
+                },
+                child: child,
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              width: MediaQuery.sizeOf(context).width,
+              decoration: BoxDecoration(
+                color: backgroundBlack,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  width: 2,
+                  color: pinkSwitch,
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      experiences[selectedIndex].title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          experiences[selectedIndex].title,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: Icon(
+                              Icons.clear,
+                              color: colorWhite,
+                            ))
+                      ],
                     ),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: Icon(
-                          Icons.clear,
-                          color: colorWhite,
-                        ))
-                  ],
-                ),
-                Text(
-                  "@${experiences[selectedIndex].company}",
-                  softWrap: true,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: colorWhite,
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Column(
-                  children: [
-                    for (String point in experiences[selectedIndex].points)
-                      Column(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                    Text(
+                      "@${experiences[selectedIndex].company}",
+                      softWrap: true,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: colorWhite,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Column(
+                      children: [
+                        for (String point in experiences[selectedIndex].points)
+                          Column(
                             children: [
-                              Icon(
-                                Icons.adjust,
-                                color: orangeSwitch,
-                                size: 20,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.adjust,
+                                    color: orangeSwitch,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                        point,
+                                        softWrap: true,
+                                      ))
+                                ],
                               ),
                               const SizedBox(
-                                width: 10,
+                                height: 10,
                               ),
-                              Expanded(
-                                  child: Text(
-                                    point,
-                                    softWrap: true,
-                                  ))
                             ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      )
+                          )
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
+            ),),
       );
     });
   }
