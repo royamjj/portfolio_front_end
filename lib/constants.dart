@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolio/projects.dart';
 
 import 'experience.dart';
 
@@ -79,5 +80,56 @@ final List<Experience> experiences = [
       "Engineered multiple high-performance adapters, seamlessly integrating various services and systems to enhance scalability and ensure smooth data flow across the architecture."
     ],
     description: "Started my career as an intern at Brane, contributed many new features, and functionalities",
+  ),
+];
+
+final List<Project> projects = [
+  Project(
+    title: "Take Care",
+    description: "Monitoring and Control of COVID Vaccine Storage Temperature Using IoT and Machine Learning",
+    points: [
+      "An IoT and Machine Learning system developed for monitoring and controlling temperature of COVID-19 vaccine storage rooms, IEEE paper ready explanation and documentation",
+      "The proposed system addresses the crucial need for real-time vaccine storage temperature monitoring, using an LED and buzzer alert to notify workers instantly, preventing temperature-related vaccine spoilage.",
+      "Unlike prior systems, this model focuses specifically on vaccine safety, ensuring vaccines remain effective and available to serve the public in high volumes.",
+      "Future enhancements could leverage advanced ML algorithms, solar power for independence, and Raspberry Pi or updated embedded systems for scalability. Additionally, a custom dashboard with web tools (e.g., React, NodeJS, Django) could enable remote monitoring and control, improving accessibility and usability."
+    ],
+    techStack: ["Python", "Virtual Machine", "ReactJS"],
+    links: [Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740")],
+  ),
+  Project(
+    title: "Take Care",
+    description: "Monitoring and Control of COVID Vaccine Storage Temperature Using IoT and Machine Learning",
+    points: [
+      "An IoT and Machine Learning system developed for monitoring and controlling temperature of COVID-19 vaccine storage rooms, IEEE paper ready explanation and documentation",
+      "The proposed system addresses the crucial need for real-time vaccine storage temperature monitoring, using an LED and buzzer alert to notify workers instantly, preventing temperature-related vaccine spoilage.",
+      "Unlike prior systems, this model focuses specifically on vaccine safety, ensuring vaccines remain effective and available to serve the public in high volumes.",
+      "Future enhancements could leverage advanced ML algorithms, solar power for independence, and Raspberry Pi or updated embedded systems for scalability. Additionally, a custom dashboard with web tools (e.g., React, NodeJS, Django) could enable remote monitoring and control, improving accessibility and usability."
+    ],
+    techStack: ["Python", "Virtual Machine", "ReactJS"],
+    links: [Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740")],
+  ),
+  Project(
+    title: "Take Care",
+    description: "Monitoring and Control of COVID Vaccine Storage Temperature Using IoT and Machine Learning",
+    points: [
+      "An IoT and Machine Learning system developed for monitoring and controlling temperature of COVID-19 vaccine storage rooms, IEEE paper ready explanation and documentation",
+      "The proposed system addresses the crucial need for real-time vaccine storage temperature monitoring, using an LED and buzzer alert to notify workers instantly, preventing temperature-related vaccine spoilage.",
+      "Unlike prior systems, this model focuses specifically on vaccine safety, ensuring vaccines remain effective and available to serve the public in high volumes.",
+      "Future enhancements could leverage advanced ML algorithms, solar power for independence, and Raspberry Pi or updated embedded systems for scalability. Additionally, a custom dashboard with web tools (e.g., React, NodeJS, Django) could enable remote monitoring and control, improving accessibility and usability."
+    ],
+    techStack: ["Python", "Virtual Machine", "ReactJS"],
+    links: [Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740")],
+  ),
+  Project(
+    title: "Take Care",
+    description: "Monitoring and Control of COVID Vaccine Storage Temperature Using IoT and Machine Learning",
+    points: [
+      "An IoT and Machine Learning system developed for monitoring and controlling temperature of COVID-19 vaccine storage rooms, IEEE paper ready explanation and documentation",
+      "The proposed system addresses the crucial need for real-time vaccine storage temperature monitoring, using an LED and buzzer alert to notify workers instantly, preventing temperature-related vaccine spoilage.",
+      "Unlike prior systems, this model focuses specifically on vaccine safety, ensuring vaccines remain effective and available to serve the public in high volumes.",
+      "Future enhancements could leverage advanced ML algorithms, solar power for independence, and Raspberry Pi or updated embedded systems for scalability. Additionally, a custom dashboard with web tools (e.g., React, NodeJS, Django) could enable remote monitoring and control, improving accessibility and usability."
+    ],
+    techStack: ["Python", "Virtual Machine", "ReactJS"],
+    links: [Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740"),Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740"),Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740"),Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740")],
   ),
 ];

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:portfolio/constants.dart';
+import 'package:portfolio/projects.dart';
 
 import 'experience.dart';
 
@@ -39,27 +40,41 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> {
                             width >= 800 ? width * 0.1 : 30, 50, width >= 800 ? width * 0.1 : 30, 0),
                         child: getBioWidget(width))),
               ),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(width >= 800 ? width * 0.1 : 30, 40, width >= 800 ? width * 0.1 : 30, 10),
+              //   child: Column(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text("Experience", style: Theme.of(context).textTheme.headlineLarge),
+              //       const SizedBox(
+              //         height: 50,
+              //       ),
+              //       const ExperienceWidget(),
+              //     ],
+              //   ),
+              // ),
+              const SizedBox(
+                height: 50,
+              ),
               Padding(
                 padding: EdgeInsets.fromLTRB(width >= 800 ? width * 0.1 : 30, 40, width >= 800 ? width * 0.1 : 30, 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Experience", style: Theme.of(context).textTheme.headlineLarge),
+                    Text("Projects", style: Theme.of(context).textTheme.headlineLarge),
                     const SizedBox(
                       height: 50,
                     ),
-                    ExperienceWidget(
-                      experiences: experiences,
-                    ),
+                    const ProjectWidget(),
                   ],
                 ),
               ),
-              //projects
-              //resume
               //certificates
-              //contact
               //publications
+              //resume
+              //contact
             ],
           ),
         ));

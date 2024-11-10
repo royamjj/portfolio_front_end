@@ -18,9 +18,8 @@ class Experience {
 }
 
 class ExperienceWidget extends StatefulWidget {
-  final List<Experience> experiences;
 
-  const ExperienceWidget({super.key, required this.experiences});
+  const ExperienceWidget({super.key});
 
   @override
   ExperienceWidgetState createState() => ExperienceWidgetState();
@@ -47,8 +46,8 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
           flex: 1,
           child: Column(
             children: [
-              for (int i = 0; i < widget.experiences.length; i++)
-                createTileWidget(i, i == widget.experiences.length - 1, i == 0)
+              for (int i = 0; i < experiences.length; i++)
+                createTileWidget(i, i == experiences.length - 1, i == 0)
             ],
           ),
         ),
@@ -82,13 +81,26 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.experiences[selectedIndex].title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      experiences[selectedIndex].title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(
+                          Icons.clear,
+                          color: colorWhite,
+                        ))
+                  ],
                 ),
                 Text(
-                  "@${widget.experiences[selectedIndex].company}",
+                  "@${experiences[selectedIndex].company}",
                   softWrap: true,
                   style: TextStyle(
                     fontSize: 14,
@@ -100,7 +112,7 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                 ),
                 Column(
                   children: [
-                    for (String point in widget.experiences[selectedIndex].points)
+                    for (String point in experiences[selectedIndex].points)
                       Column(
                         children: [
                           Row(
@@ -189,7 +201,7 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                     children: [
                       Expanded(
                         child: Text(
-                          widget.experiences[index].title,
+                          experiences[index].title,
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!
@@ -199,14 +211,14 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        widget.experiences[index].yearRange,
+                        experiences[index].yearRange,
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    widget.experiences[index].description,
+                    experiences[index].description,
                     style: TextStyle(
                       fontSize: 14,
                       color: colorWhite,
@@ -249,13 +261,13 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                 children: [
                   Expanded(
                     child: Text(
-                      widget.experiences[selectedIndex].title,
+                      experiences[selectedIndex].title,
                       style: Theme.of(context).textTheme.titleMedium,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Text(
-                    "  @${widget.experiences[selectedIndex].company}",
+                    "  @${experiences[selectedIndex].company}",
                     softWrap: true,
                     style: TextStyle(
                       fontSize: 14,
@@ -269,7 +281,7 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
               ),
               Column(
                 children: [
-                  for (String point in widget.experiences[selectedIndex].points)
+                  for (String point in experiences[selectedIndex].points)
                     Column(
                       children: [
                         Row(
@@ -297,22 +309,6 @@ class ExperienceWidgetState extends State<ExperienceWidget> {
                     )
                 ],
               ),
-              // SizedBox(
-              //   height: 300,
-              //   child: ListView.builder(
-              //     itemCount: widget.experiences[selectedIndex].points.length,
-              //     itemBuilder: (BuildContext context, int index) {
-              //       return Expanded(
-              //         child: Row(
-              //           children: [
-              //             Icon(Icons.adjust),
-              //             Text(widget.experiences[selectedIndex].points[index], softWrap: true,)
-              //           ],
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ));
