@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/constants.dart';
+import 'package:portfolio/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Project {
@@ -10,8 +11,6 @@ class Project {
   final List<String>? images;
   final List<Link>? links;
 
-  // title, description, details.., ...techStack, ...images
-
   Project({
     required this.title,
     required this.description,
@@ -19,16 +18,6 @@ class Project {
     required this.techStack,
     this.images,
     this.links,
-  });
-}
-
-class Link {
-  final String displayText;
-  final String link;
-
-  Link({
-    required this.displayText,
-    required this.link,
   });
 }
 

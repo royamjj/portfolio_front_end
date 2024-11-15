@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:portfolio/certification.dart';
 import 'package:portfolio/constants.dart';
+import 'package:portfolio/contact.dart';
 import 'package:portfolio/projects.dart';
+import 'package:portfolio/publication.dart';
 
 import 'experience.dart';
 
@@ -92,7 +95,7 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> with SingleTick
                     children: [
                       Text("Experience", style: Theme.of(context).textTheme.headlineLarge),
                       const SizedBox(
-                        height: 50,
+                        height: 30,
                       ),
                       const ExperienceWidget(),
                       const SizedBox(
@@ -103,14 +106,34 @@ class _ProfessionalScreenState extends State<ProfessionalScreen> with SingleTick
                         height: 30,
                       ),
                       const ProjectWidget(),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Text("Certifications", style: Theme.of(context).textTheme.headlineLarge),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      const CertificationWidget(),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Text("Publications", style: Theme.of(context).textTheme.headlineLarge),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      const PublicationWidget(),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Text("Contact", style: Theme.of(context).textTheme.headlineLarge),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      const ContactWidget(),
                     ],
                   ),
                 ),
               ),
-
-              //certificates
-              //publications
-              //resume
               //contact
             ],
           ),

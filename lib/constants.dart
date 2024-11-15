@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolio/link.dart';
 import 'package:portfolio/projects.dart';
+import 'package:portfolio/publication.dart';
+import 'package:simple_icons/simple_icons.dart';
 
+import 'certification.dart';
+import 'contact.dart';
 import 'experience.dart';
 
 final Color colorWhite = HexColor("FFFFFF");
@@ -13,8 +18,8 @@ final Color pinkSwitch = HexColor("be375f");
 final Color purple = HexColor("b04ec3");
 final Color darkPurple = HexColor("883f96");
 final Color yellow = HexColor("e7de76");
-final Color animationRed = Colors.red.shade400;
-final Color animationOrange = Colors.orange.shade300;
+final Color animationRed = HexColor("FE5858");
+final Color animationOrange = HexColor("EE9617");
 
 final ThemeData theme = ThemeData(
   scaffoldBackgroundColor: colorWhite,
@@ -132,6 +137,87 @@ final List<Project> projects = [
       "Future enhancements could leverage advanced ML algorithms, solar power for independence, and Raspberry Pi or updated embedded systems for scalability. Additionally, a custom dashboard with web tools (e.g., React, NodeJS, Django) could enable remote monitoring and control, improving accessibility and usability."
     ],
     techStack: ["Python", "Virtual Machine", "ReactJS"],
-    links: [Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740"),Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740"),Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740"),Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740")],
+    links: [
+      Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740"),
+      Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740"),
+      Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740"),
+      Link(displayText: "Open Publication", link: "https://ieeexplore.ieee.org/document/9740740")
+    ],
   ),
+];
+
+final List<Certification> certificates = [
+  Certification(
+      title: "Participated in SCEECS 2022",
+      link: Link(
+          displayText: "Certificate",
+          link: "https://drive.google.com/file/d/1y7jhX_Y4LgywCfiEtM39dVhpva-fZOXv/view?usp=sharing")),
+  Certification(
+      title: "The Arduino Platform and C Programming",
+      link: Link(
+          displayText: "Certificate",
+          link: "https://drive.google.com/file/d/1Fra-N_t8e-jbKOYqsOqQx78vUXaaRBNz/view?usp=sharing")),
+  Certification(
+      title: "Front-End Web Development with React",
+      link: Link(
+          displayText: "Certificate",
+          link: "https://drive.google.com/file/d/1rVEb0MmLUqUhOaxolsZqH16zfRw5_L9P/view?usp=sharing")),
+  Certification(
+      title: "Introduction to the Internet of Things and Embedded Systems",
+      link: Link(
+          displayText: "Certificate",
+          link: "https://drive.google.com/file/d/1MOYJMFnrBOEjwSatMKrTiUWudD8ROFEr/view?usp=sharing")),
+  Certification(
+      title: "Internshala Internet of Things workshop",
+      link: Link(
+          displayText: "Certificate",
+          link: "https://drive.google.com/file/d/1wTtxPDIgmKm2w18sEHUVMvAnfYADp4br/view?usp=sharing")),
+  Certification(
+      title: "Codathon 2022",
+      link: Link(
+          displayText: "Certificate",
+          link: "https://drive.google.com/file/d/1frq6XU81mqV8N9Bh_BqcJBeFX9CkWzeA/view?usp=sharing")),
+  Certification(
+      title: "Crash Course on Python",
+      link: Link(
+          displayText: "Certificate",
+          link: "https://drive.google.com/file/d/1rIglK-h8vrQfbfHsnWTDozu5SJ44_kFo/view?usp=sharing")),
+];
+
+final List<Publication> publications = [
+  Publication(
+      title: "Monitoring and Control of COVID Vaccine Storage Temperature Using IoT and Machine Learning",
+      link: Link(displayText: "Link to publication", link: "https://ieeexplore.ieee.org/document/9740740")),
+];
+
+final List<Contact> contacts = [
+  Contact(
+      link: Link(displayText: "Github", link: "https://github.com/royamjj"),
+      icon: Icon(
+        SimpleIcons.github,
+        color: orangeSwitch,
+      )),
+  Contact(
+      link: Link(displayText: "LinkedIn", link: "https://www.linkedin.com/in/rj00114/"),
+      icon: Icon(
+        SimpleIcons.linkedin,
+        color: orangeSwitch,
+      )),
+  Contact(
+      link: Link(
+          displayText: "Gmail",
+          link: Uri(
+            scheme: 'mailto',
+            path: "royamjain@gmail.com",
+          ).path),
+      icon: Icon(
+        SimpleIcons.gmail,
+        color: orangeSwitch,
+      )),
+  Contact(
+      link: Link(displayText: "+91 7733007245", link: "+91 7733007245"),
+      icon: Icon(
+        Icons.contacts,
+        color: orangeSwitch,
+      )),
 ];
